@@ -1,0 +1,171 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+@font-face {
+    font-family: 'vibes';
+    src: url('fonts/Groovy\ Vibes.otf');
+}
+
+body{
+    background-color: #efeae2;
+}
+
+header{
+    background-color: #1b2b4c;
+    border-bottom: 0.5em solid #bbae9e;
+    width: 100%;
+    height: 7.5em;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+header section{
+    display: flex;
+    flex-direction: row;
+    margin: 0.5em;
+    align-items: center;
+}
+
+header section a{
+    display: flex;
+    flex-direction: row;
+    margin: 1em;
+    align-items: center;
+    text-decoration: none;
+}
+
+header section h1{
+    font-size: 5em;
+    font-family: vibes;
+    color: #efeae2;
+    margin-left: 0.2em;
+}
+
+header #livros{
+    width: 7em;
+    height: 7em;
+}
+
+header #sair{
+    width: 3em;
+    height: 3em;
+    margin-right: 1em;
+}
+
+main{
+    margin-top: 2em;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    gap: 4em 1em;
+}
+
+main section{
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    display: flex;
+    justify-content: flex-start;
+    gap: 1.5em;
+    width: 37em;
+    height: auto;
+    line-height: 3em;
+    border: 3px solid #1b2b4c;
+    padding: 1em;
+}
+
+main section h1, #modal article h1{
+    font-size: 2em;
+    max-width: 11vw;
+    color: #af6041;
+}
+
+main section h2, #modal article h2{
+    font-size: 1.5em;
+    color: rgb(118, 118, 118);
+}
+
+main section article select{
+    background-color: transparent;
+    border: 0.15em solid #af6041;
+    width: 12em;
+    font-size: 1em;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: #3b3b3b;
+}
+
+#selecionar_metodo{
+    width: 1.88em;
+    height: 1.56em;
+    background-color: #af6041;
+    border: 2px solid #af6041;
+    color: #ffffff;
+}
+
+#selecionar_metodo:hover{
+    box-shadow: 0px 0px 5px 0px #af60417c;
+}
+
+.capa{
+    width: 13.75em;
+    height: 18.75em;
+}
+
+#editar_excluir img{
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0.5em;
+    transition: 1.2s;
+}
+
+#editar_excluir img:hover{
+    transform: scale(1.2);
+}
+
+#fundo{
+    backdrop-filter: blur(1.5rem); 
+    position: fixed;   
+    width: 100%;
+    height: 100vh;
+    display: none;
+    z-index: 2;
+}
+
+#fundo div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#modal {
+    width: 50em;
+    height: 30em;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    display: flex;
+    justify-content: flex-start;
+    gap: 1.5em;
+    background-color: #efeae2;
+    padding: 1em;
+    border: 1px solid #af6041;
+    line-height: 3em;
+} 
+
+#modal article img:not(#fechar){
+    width: 20em;
+    height: 30em;
+}
+
+#modal article p{
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    color: #202020;
+}
+
+#fechar{
+    width: 2em;
+    height: 2em;
+    position: relative;
+    left: 11em;
+}

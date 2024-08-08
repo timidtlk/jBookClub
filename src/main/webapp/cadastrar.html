@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" type="image/x-icon" href="livros.png">
+        <link rel="stylesheet" href="css/cadastrar.css">
+        <title>Adicionar livro</title>
+    </head>
+    <body>
+        <main>
+            <section>
+                <article id="titulo_pag">
+                    <h1>Adicione um livro a sua lista</h1>
+                </article>
+                <article id="formulario">
+                    <form action="Livro" method="post">
+                        <p>
+                            <label for="titulo"></label>
+                            <input type="text" id="titulo" name="titulo" placeholder="Título do livro" required>
+                        </p>
+                        <p>
+                            <label for="autor"></label>
+                            <input type="text" id="autor" name="autor" placeholder="Autor" required>
+                        </p>
+                        <p>
+                            <label for="genero"></label>
+                            <input type="text" id="genero" name="genero" placeholder="Gênero" required>
+                        </p>
+                        <p>
+                            <label for="editora"></label>
+                            <input type="text" id="editora" name="editora" placeholder="Editora" required>
+                        </p>
+                        <p>
+                            <label for="ano"></label>
+                            <input type="date" id="ano" name="anoLancamento" placeholder="Ano de lançamento" required>
+                        </p>
+                        <p>
+                            <label for="qtdPgsTotal"></label>
+                            <input type="number" id="qtdPgsTotal" name="qtdPgsTotal" placeholder="Quantidade de páginas" min="0" required>
+                        </p>
+                        <p>
+                            <label for="qtdPgsLidas"></label>
+                            <input type="number" id="qtdPgsLidas" name="qtdPgsLidas" placeholder="Quantidade de páginas lidas" min="0" required>
+                        </p>
+                        <p>
+                            <label for="linguas"></label>
+                            <input type="text" id="linguas" name="linguas" placeholder="Línguas disponíveis" required>
+                        </p>
+                        <p>
+                            <label for="avaliacao"></label>
+                            <input type="text" id="avaliacao" name="avaliacao" placeholder="Avaliação" required>
+                        </p>                  
+                        <p id="botoes">
+                            <a href="index.html">
+                                <input type="button" value="CANCELAR" id="botao">
+                            </a>
+                            <input type="submit" value="ADICIONAR" id="botao">
+                        </p>
+                    </form>
+                </article>
+            </section>
+        </main>
+        <script>
+            var ano = document.getElementById("ano")
+            ano.max = new Date().toISOString().split('T')[0]
+        </script>
+    </body>
+</html>

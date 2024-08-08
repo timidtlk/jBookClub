@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" type="image/x-icon" href="../image/lista/livros.png">
+        <link rel="stylesheet" href="../css/mensagem.css">
+        <title>jBookClub</title>
+    </head>
+    <body onload="imagens()">
+        <main>
+            <section>
+                <article>
+                    <img src="">
+                </article>
+                <article style="color: rgb(189, 55, 55);">
+                    <h1>Erro: livro não cadastrado</h1>
+                    <!-- <h1>Erro: não foi possível excluir o livro</h1>
+                    <h1>Erro: não foi possível editar o livro</h1> -->
+                    <a hrfe="#">
+                        <input type="button" value="VOLTAR">
+                    </a>
+                </article>
+            </section>
+        </main>
+    </body>
+    <script>
+
+        function imagens(){
+            var fundo = [1,2,3,4][Math.floor(Math.random()*4)];
+            var img = document.querySelector("img");
+            img.src = "../image/nao_cadastrado/fundo" + fundo + ".png"
+        }
+    </script>
+</html>

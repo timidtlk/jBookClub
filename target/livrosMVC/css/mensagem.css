@@ -1,0 +1,44 @@
+body{
+    background-color: #1b2b4c;
+}
+
+main{
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    height: 100vh;
+}
+
+section{
+    background-color: #efeae2;
+    width: 1100px;
+    height: 75vh;
+    display: flex;
+    gap: 20px;
+    flex-direction: row;
+    border: 2px solid #bbae9e;
+    border-radius: 30px;
+}
+
+section img{
+    margin-top: 3em;
+    width: 34.38em;
+    height: 34.38em;
+}
+
+section h1{
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 6.25em;
+    margin-bottom: 0.5em;
+}
+
+input{
+    background-color: transparent;
+    color: #1b2b4c;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    width: 9em;
+    height: 1.5em;
+    font-size: 2em;
+    border: 2px solid #1b2b4c;
+    border-radius: 30px;
+}

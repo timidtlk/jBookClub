@@ -1,0 +1,129 @@
+@font-face {
+    font-family: 'Lemon';
+    src: url('fonts/Lemon\ Mocktail.ttf') format('truetype');
+}
+
+body{
+    background-color: #1b2b4c;
+}
+
+main{
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    height: 98vh;
+} 
+
+section{
+    display: flex;
+    justify-content: space-evenly;
+    background-color: #efeae2;
+    box-shadow: 0em 0em 0.75em 0.63em #1d1a36b8;
+    width: 70em;
+    height: 80vh;
+}
+
+#formulario{
+    background-color: transparent;
+    width:43.75em;
+    height: 40em;   
+}
+
+#titulo_pag{
+    width: 35em;
+    height: 80vh;
+    border-right: 0.31em solid #1b2b4c;
+    padding-left: 0.95em;
+    padding-right: 0.95em;
+}
+
+form{
+    text-align: center;
+    margin-top: 2.19em;
+}
+
+input:not(#botao, #id){
+    background-color: transparent;
+    border: 2px solid #bb572f;  
+    height: 2.5em;
+    width: 27em;
+    margin: 0.1em;
+    color: #796f5f;
+    font-size: 1.2em;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+input::placeholder{
+    color: #796f5f;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 1.2em;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator{
+    background-image: url('../image/cadastrar/calendario.png');
+    width: 2.5em;
+    height: 2.5em;
+    margin: 0.31em;
+} 
+
+form p:not(#botoes) #botao{
+    transform-origin: 50% 50% 0;
+    transition: 0.7s;
+    background-color: transparent;
+    border: 2px solid #1b2b4c;
+    border-radius: 30px;
+    width: 10.75em;
+    height: 2em;
+    color: #1b2b4c;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 30px;
+    margin-bottom: 0;
+}
+
+form #botao:hover{
+    transform: scale(1.2);
+    background-color: #1b2b4c;
+    border: 2px solid #1b2b4c;
+    color:#efeae2;
+
+}
+
+h1{
+    text-align: center;
+    font-family: Lemon;
+    font-size: 6.5em;
+    color: #af6041;
+}
+
+#id{
+    background-color: transparent;
+    border: 2px solid #bb572f;  
+    height: 2.5em;
+    width: 27em;
+    margin: 0.1em;
+    color: #796f5f;
+    font-size: 1.2em;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    margin-top: 2.5em;
+}
+
+#botoes input{
+    transform-origin: 50% 50% 0;
+    transition: 0.7s;
+    background-color: transparent;
+    border: 2px solid #1b2b4c;
+    border-radius: 30px;
+    width: 7em;
+    height: 50px;
+    color: #1b2b4c;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 30px;
+    margin-bottom: 0;
+}
+
+#botoes{
+    display: flex;
+    flex-direction: row;
+    gap: 2em;
+    justify-content: center;
+}
