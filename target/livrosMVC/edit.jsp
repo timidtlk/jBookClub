@@ -60,10 +60,10 @@
                             <input type="text" id="avaliacao" name="avaliacao" placeholder="Avaliação" value="<%= livro.getAvaliacao() %>" required>
                         </p>
                         <p id="botoes">
-                            <a href="Lista?operacao=Listar">
+                            <a href="Livro?operacao=Listar">
                                 <input type="button" value="CANCELAR" id="botao">
                             </a>
-                            <input type="submit" value="ATUALIZAR" id="botao">
+                            <input type="submit" value="ATUALIZAR" name="operacao" id="botao">
                         </p>
                     </form>
                 </article>

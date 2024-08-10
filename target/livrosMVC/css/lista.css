@@ -161,6 +161,7 @@ main section article select{
 #modal article p{
     font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     color: #202020;
+    width: 14em;
 }
 
 #fechar{

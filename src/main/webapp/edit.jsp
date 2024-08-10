@@ -63,7 +63,7 @@
                             <a href="Livro?operacao=Listar">
                                 <input type="button" value="CANCELAR" id="botao">
                             </a>
-                            <input type="submit" value="ATUALIZAR" id="botao">
+                            <input type="submit" value="ATUALIZAR" name="operacao" id="botao">
                         </p>
                     </form>
                 </article>

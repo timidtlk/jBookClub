@@ -14,7 +14,7 @@ public class LivroDTO {
 	private LocalDate anoLancamento;
 	private double qtdPaginasTotal;
 	private double qtdPaginasLidas;
-	
+
 	public LivroDTO(int id, String titulo, String autor, String genero, String editora, String linguas, String avaliacao,
 			LocalDate anoLancamento, double qtdPaginasTotal, double qtdPaginasLidas) {
 		super();
