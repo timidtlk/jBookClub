@@ -132,6 +132,9 @@ public class LivroDAO {
 			resultado = statement.executeQuery();
 			
 			while (resultado.next()) {
+
+				
+
 				String titulo = resultado.getString("titulo");
 				String autor = resultado.getString("autor");
 				String genero = resultado.getString("genero");

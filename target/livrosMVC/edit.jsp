@@ -26,7 +26,9 @@
                     <h1>Edite seu livro</h1>
                 </article>
                 <article id="formulario">
-                    <form action="lista.html" method="post">
+                    <form action="Livro" method="post">
+
+                        <input type="text" id="id" name="id" readonly placeholder="ID" value="<%= livro.getId() %>" style="display: none">
                         <p>
                             <label for="titulo"></label>
                             <input type="text" id="titulo" name="titulo" placeholder="Título do livro" value="<%= livro.getTitulo() %>" required>
@@ -41,7 +43,7 @@
                         </p>
                         <p>
                             <label for="ano"></label>
-                            <input type="date" id="ano" name="ano" value="<%= ano %>" required>
+                            <input type="date" id="ano" name="anoLancamento" value="<%= ano %>" required>
                         </p>
                         <p>
                             <label for="qPag"></label>
