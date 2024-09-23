@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="model.LivroDTO, java.util.ArrayList" %>
+<%@ page import="model.Livro, java.util.ArrayList" %>
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
@@ -44,9 +44,9 @@
         
             <%
                 @SuppressWarnings("unchecked")
-                ArrayList<LivroDTO> lista = (ArrayList<LivroDTO>) request.getAttribute("lista"); 
+                ArrayList<Livro> lista = (ArrayList<Livro>) request.getAttribute("lista"); 
             
-                for (LivroDTO livro : lista) {
+                for (Livro livro : lista) {
 
                     int idade = livro.getIdadeLivro();
                     String estimativa = String.format("%d horas, %d minutos e %d segundos", livro.getEstimativaLeitura()[0], livro.getEstimativaLeitura()[1], livro.getEstimativaLeitura()[2]);
@@ -69,8 +69,8 @@
                     out.println("<input type=\"button\" value=\"OK\" id=\"selecionar_metodo\" onclick=\"modal('"+ livro.getId()+ "', '" + livro.getTitulo() +"', '" + livro.getAutor() + "', '" + idade +"', '"+ estimativa +"', '"+ progresso +"', '"+ qtdLinguas + "')\">");
                     out.println("</article>");
                     out.println("<article id=\"editar_excluir\">");
-                    out.println("<a href=\"Livro?operacao=Remover&id="+ livro.getId() +"\"><img src=\"image/lista/excluir.png\"></a>");
-                    out.println("<a href=\"Livro?operacao=Editar&id="+ livro.getId() +"\"><img src=\"image/lista/editar.png\" class=\"operacoes\"></a>");
+                    out.println("<a href=\"LivroController?operacao=Remover&id="+ livro.getId() +"\"><img src=\"image/lista/excluir.png\"></a>");
+                    out.println("<a href=\"LivroController?operacao=Editar&id="+ livro.getId() +"\"><img src=\"image/lista/editar.png\" class=\"operacoes\"></a>");
                     out.println("</article>");
                     out.println("</section>");
                 }

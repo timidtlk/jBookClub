@@ -18,7 +18,7 @@ public class LivroDAO {
 		this.dataSource = dataSource;
 	}
 
-	public boolean inserirLivro(LivroDTO livro) {
+	public boolean inserirLivro(Livro livro) {
 		Connection conexao = null;
 		PreparedStatement statement = null;
 		int resultado;
@@ -53,7 +53,7 @@ public class LivroDAO {
 		return resultado == 1;
 	}
 	
-	public boolean modificarLivro(LivroDTO livro) {
+	public boolean modificarLivro(Livro livro) {
 		Connection conexao = null;
 		PreparedStatement statement = null;
 		int resultado;
@@ -83,8 +83,8 @@ public class LivroDAO {
 		return resultado == 1;
 	}
 	
-	public ArrayList<LivroDTO> consultarLivros() {
-		ArrayList<LivroDTO> listaLivro = new ArrayList<>();
+	public ArrayList<Livro> consultarLivros() {
+		ArrayList<Livro> listaLivro = new ArrayList<>();
 		Connection conexao = null;
 		PreparedStatement statement = null;
 		ResultSet resultado = null;
@@ -107,7 +107,7 @@ public class LivroDAO {
 				double qtdPaginasTotal = resultado.getDouble("qtdPaginasTotal");
 				double qtdPaginasLidas = resultado.getDouble("qtdPaginasLidas");
 				
-				LivroDTO tarefa = new LivroDTO(id, titulo, autor, genero, editora, linguas, avaliacao, anoLancamento, qtdPaginasTotal, qtdPaginasLidas);
+				Livro tarefa = new Livro(id, titulo, autor, genero, editora, linguas, avaliacao, anoLancamento, qtdPaginasTotal, qtdPaginasLidas);
 				listaLivro.add(tarefa);
 			}
 		} catch (SQLException e) {
@@ -118,8 +118,8 @@ public class LivroDAO {
 		return listaLivro;
 	}
 	
-	public LivroDTO procurarLivro(int id) {
-		LivroDTO livro = null;
+	public Livro procurarLivro(int id) {
+		Livro livro = null;
 		Connection conexao = null;
 		PreparedStatement statement = null;
 		ResultSet resultado = null;
@@ -145,7 +145,7 @@ public class LivroDAO {
 				double qtdPaginasTotal = resultado.getDouble("qtdPaginasTotal");
 				double qtdPaginasLidas = resultado.getDouble("qtdPaginasLidas");
 				
-				livro = new LivroDTO(id, titulo, autor, genero, editora, linguas, avaliacao, anoLancamento, qtdPaginasTotal, qtdPaginasLidas);
+				livro = new Livro(id, titulo, autor, genero, editora, linguas, avaliacao, anoLancamento, qtdPaginasTotal, qtdPaginasLidas);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
