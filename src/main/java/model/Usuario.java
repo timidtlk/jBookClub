@@ -8,4 +8,9 @@ public record Usuario(
     String cpf,
     String telefone,
     String password
-) {}
+) {
+
+    public Usuario(String login, String email) {
+        this("", "", login, email, "", "", "");
+    }
+}

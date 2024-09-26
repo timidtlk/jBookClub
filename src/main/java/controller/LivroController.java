@@ -16,7 +16,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.LivroDAO;
+import model.Usuario;
 import model.Livro;
 
 @WebServlet("/LivroController")
@@ -82,11 +84,15 @@ public class LivroController extends HttpServlet {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		};
+
+		HttpSession session = request.getSession();
+
+		Usuario usuario = (Usuario) session.getAttribute("usuario");
 		
 		double qtdPgsTotal = Double.parseDouble(request.getParameter("qtdPgsTotal"));
 		double qtdPgsLidas = Double.parseDouble(request.getParameter("qtdPgsLidas"));
 		
-		Livro livro = new Livro(0, titulo, autor, genero, editora, linguas, avaliacao, anoLancamento, qtdPgsTotal, qtdPgsLidas);
+		Livro livro = new Livro(0, titulo, autor, genero, editora, linguas, avaliacao, anoLancamento, qtdPgsTotal, qtdPgsLidas, usuario.id());
 		
 		boolean status = lDAO.inserirLivro(livro);
 		
@@ -116,8 +122,12 @@ public class LivroController extends HttpServlet {
 		
 		double qtdPgsTotal = Double.parseDouble(request.getParameter("qtdPgsTotal"));
 		double qtdPgsLidas = Double.parseDouble(request.getParameter("qtdPgsLidas"));
+
+		HttpSession session = request.getSession();
+
+		Usuario usuario = (Usuario) session.getAttribute("usuario");
 		
-		Livro livro = new Livro(id, titulo, autor, genero, editora, linguas, avaliacao, anoLancamento, qtdPgsTotal, qtdPgsLidas);
+		Livro livro = new Livro(id, titulo, autor, genero, editora, linguas, avaliacao, anoLancamento, qtdPgsTotal, qtdPgsLidas, usuario.id());
 		
 		boolean status = lDAO.modificarLivro(livro);
 		
@@ -131,7 +141,11 @@ public class LivroController extends HttpServlet {
 	private void listarLivro(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		ArrayList<Livro> livros = new ArrayList<>();
 		
-		livros = lDAO.consultarLivros();
+		HttpSession session = request.getSession();
+
+		Usuario usuario = (Usuario) session.getAttribute("usuario");
+
+		livros = lDAO.consultarLivros(usuario.id());
 		
 		request.setAttribute("lista", livros);
 		
@@ -140,7 +154,10 @@ public class LivroController extends HttpServlet {
 	}
 
 	private void excluirLivro(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		boolean status = lDAO.excluirLivro(Integer.parseInt(request.getParameter("id")));
+		HttpSession session = request.getSession();
+		Usuario usuario = (Usuario) session.getAttribute("usuario");
+		
+		boolean status = lDAO.excluirLivro(Integer.parseInt(request.getParameter("id")), usuario.id());
 		
 		request.setAttribute("status", status);
 		request.setAttribute("operacao", "exclui");
@@ -150,7 +167,10 @@ public class LivroController extends HttpServlet {
 	}
 	
 	private void modificarLivro(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Livro livro = lDAO.procurarLivro(Integer.parseInt(request.getParameter("id")));
+		HttpSession session = request.getSession();
+		Usuario usuario = (Usuario) session.getAttribute("usuario");
+
+		Livro livro = lDAO.procurarLivro(Integer.parseInt(request.getParameter("id")), usuario.id());
 		
 		request.setAttribute("livro", livro);
 		

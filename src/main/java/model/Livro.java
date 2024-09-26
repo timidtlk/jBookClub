@@ -14,9 +14,12 @@ public class Livro {
 	private LocalDate anoLancamento;
 	private double qtdPaginasTotal;
 	private double qtdPaginasLidas;
+	private String login_id;
+
+	
 
 	public Livro(int id, String titulo, String autor, String genero, String editora, String linguas, String avaliacao,
-			LocalDate anoLancamento, double qtdPaginasTotal, double qtdPaginasLidas) {
+			LocalDate anoLancamento, double qtdPaginasTotal, double qtdPaginasLidas, String login_id) {
 		super();
 		this.id = id;
 		this.titulo = titulo;
@@ -28,6 +31,7 @@ public class Livro {
 		this.anoLancamento = anoLancamento;
 		this.qtdPaginasTotal = qtdPaginasTotal;
 		this.qtdPaginasLidas = qtdPaginasLidas;
+		this.login_id = login_id;
 	}
 
 	public int getIdadeLivro() {
@@ -140,5 +144,13 @@ public class Livro {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public String getLoginId() {
+		return login_id;
+	}
+
+	public void setLoginId(String login_id) {
+		this.login_id = login_id;
 	}
 }

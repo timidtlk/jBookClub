@@ -27,7 +27,7 @@ public class LivroDAO {
 			conexao = dataSource.getConnection();
 			
 			String sql = "INSERT INTO `livro`"
-					+ "(`titulo`, `autor`, `genero`, `editora`, `linguas`, `avaliacao`, `anoLancamento`, `qtdPaginasTotal`, `qtdPaginasLidas`) "
+					+ "(`titulo`, `autor`, `genero`, `editora`, `linguas`, `avaliacao`, `anoLancamento`, `qtdPaginasTotal`, `qtdPaginasLidas`, `login_id`) "
 					+ "VALUES "
 					+ "(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			
@@ -41,6 +41,7 @@ public class LivroDAO {
 			statement.setDate(7, Date.valueOf(livro.getAnoLancamento()));
 			statement.setDouble(8, livro.getQtdPaginasTotal());
 			statement.setDouble(9, livro.getQtdPaginasLidas());
+			statement.setString(10, livro.getLoginId());
 			
 			resultado = statement.executeUpdate();
 		} catch (SQLException e) {
@@ -83,7 +84,7 @@ public class LivroDAO {
 		return resultado == 1;
 	}
 	
-	public ArrayList<Livro> consultarLivros() {
+	public ArrayList<Livro> consultarLivros(String login_id) {
 		ArrayList<Livro> listaLivro = new ArrayList<>();
 		Connection conexao = null;
 		PreparedStatement statement = null;
@@ -91,8 +92,9 @@ public class LivroDAO {
 		
 		try {
 			conexao = dataSource.getConnection();
-			String sql = "SELECT * FROM livro";
+			String sql = "SELECT * FROM livro WHERE login_id = ?";
 			statement = conexao.prepareStatement(sql);
+			statement.setString(1, login_id);
 			resultado = statement.executeQuery();
 			
 			while (resultado.next()) {
@@ -107,7 +109,7 @@ public class LivroDAO {
 				double qtdPaginasTotal = resultado.getDouble("qtdPaginasTotal");
 				double qtdPaginasLidas = resultado.getDouble("qtdPaginasLidas");
 				
-				Livro tarefa = new Livro(id, titulo, autor, genero, editora, linguas, avaliacao, anoLancamento, qtdPaginasTotal, qtdPaginasLidas);
+				Livro tarefa = new Livro(id, titulo, autor, genero, editora, linguas, avaliacao, anoLancamento, qtdPaginasTotal, qtdPaginasLidas, login_id);
 				listaLivro.add(tarefa);
 			}
 		} catch (SQLException e) {
@@ -118,7 +120,7 @@ public class LivroDAO {
 		return listaLivro;
 	}
 	
-	public Livro procurarLivro(int id) {
+	public Livro procurarLivro(int id, String login_id) {
 		Livro livro = null;
 		Connection conexao = null;
 		PreparedStatement statement = null;
@@ -126,14 +128,13 @@ public class LivroDAO {
 		
 		try {
 			conexao = dataSource.getConnection();
-			String sql = "SELECT * FROM livro WHERE id=?";
+			String sql = "SELECT * FROM livro WHERE id=? AND login_id = ?";
 			statement = conexao.prepareStatement(sql);
 			statement.setInt(1, id);
+			statement.setString(2, login_id);
 			resultado = statement.executeQuery();
 			
 			while (resultado.next()) {
-
-				
 
 				String titulo = resultado.getString("titulo");
 				String autor = resultado.getString("autor");
@@ -145,7 +146,7 @@ public class LivroDAO {
 				double qtdPaginasTotal = resultado.getDouble("qtdPaginasTotal");
 				double qtdPaginasLidas = resultado.getDouble("qtdPaginasLidas");
 				
-				livro = new Livro(id, titulo, autor, genero, editora, linguas, avaliacao, anoLancamento, qtdPaginasTotal, qtdPaginasLidas);
+				livro = new Livro(id, titulo, autor, genero, editora, linguas, avaliacao, anoLancamento, qtdPaginasTotal, qtdPaginasLidas, login_id);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -155,16 +156,17 @@ public class LivroDAO {
 		return livro;
 	}
 	
-	public boolean excluirLivro(int id) {
+	public boolean excluirLivro(int id, String login_id) {
 		Connection conexao = null;
 		PreparedStatement statement = null;
 		int resultado;
 		
 		try {
 			conexao = dataSource.getConnection();
-			String sql = "DELETE FROM livro WHERE id = ?";
+			String sql = "DELETE FROM livro WHERE id = ? AND login_id = ?";
 			statement = conexao.prepareStatement(sql);
 			statement.setInt(1, id);
+			statement.setString(2, login_id);
 			resultado = statement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();

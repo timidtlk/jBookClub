@@ -11,6 +11,12 @@
         <title>jBookClub - Lista de livros</title>
     </head>
     <body>
+        <%
+            if (session.getAttribute("usuario") == null) {
+                response.sendRedirect("/index.jsp");
+            }
+        %>
+
         <div id="fundo">
             <div>
                 <section id="modal">
@@ -45,34 +51,38 @@
             <%
                 @SuppressWarnings("unchecked")
                 ArrayList<Livro> lista = (ArrayList<Livro>) request.getAttribute("lista"); 
-            
-                for (Livro livro : lista) {
 
-                    int idade = livro.getIdadeLivro();
-                    String estimativa = String.format("%d horas, %d minutos e %d segundos", livro.getEstimativaLeitura()[0], livro.getEstimativaLeitura()[1], livro.getEstimativaLeitura()[2]);
-                    String progresso = String.format("%.2f", livro.getProgressoPcent());
-                    int qtdLinguas = livro.getQtdLinguas();
+                if (lista == null) 
+                    out.println("");
+                else {
+                    for (Livro livro : lista) {
 
-                    out.println("<section>"
-                                +"<article>"
-                                        +"<img src=\"image/lista/livro.png\" class=\"capa\">"
-                                +"</article>");
-                    out.println("<article>");
-                    out.println("<h1>"+ livro.getTitulo() +"</h1>");
-                    out.println("<h2>"+ livro.getAutor() +"</h2>");
-                    out.println("<select id=\"select"+ livro.getId() +"\">");
-                    out.println("<option value=\"idade\">Obter idade do livro</option>");
-                    out.println("<option value=\"media\">Média de leitura</option>");
-                    out.println("<option value=\"porcento\">Porcentagem já lida</option>");
-                    out.println("<option value=\"qtd\">Quantidade de línguas</option>");
-                    out.println("</select>");
-                    out.println("<input type=\"button\" value=\"OK\" id=\"selecionar_metodo\" onclick=\"modal('"+ livro.getId()+ "', '" + livro.getTitulo() +"', '" + livro.getAutor() + "', '" + idade +"', '"+ estimativa +"', '"+ progresso +"', '"+ qtdLinguas + "')\">");
-                    out.println("</article>");
-                    out.println("<article id=\"editar_excluir\">");
-                    out.println("<a href=\"LivroController?operacao=Remover&id="+ livro.getId() +"\"><img src=\"image/lista/excluir.png\"></a>");
-                    out.println("<a href=\"LivroController?operacao=Editar&id="+ livro.getId() +"\"><img src=\"image/lista/editar.png\" class=\"operacoes\"></a>");
-                    out.println("</article>");
-                    out.println("</section>");
+                        int idade = livro.getIdadeLivro();
+                        String estimativa = String.format("%d horas, %d minutos e %d segundos", livro.getEstimativaLeitura()[0], livro.getEstimativaLeitura()[1], livro.getEstimativaLeitura()[2]);
+                        String progresso = String.format("%.2f", livro.getProgressoPcent());
+                        int qtdLinguas = livro.getQtdLinguas();
+
+                        out.println("<section>"
+                                    +"<article>"
+                                            +"<img src=\"image/lista/livro.png\" class=\"capa\">"
+                                    +"</article>");
+                        out.println("<article>");
+                        out.println("<h1>"+ livro.getTitulo() +"</h1>");
+                        out.println("<h2>"+ livro.getAutor() +"</h2>");
+                        out.println("<select id=\"select"+ livro.getId() +"\">");
+                        out.println("<option value=\"idade\">Obter idade do livro</option>");
+                        out.println("<option value=\"media\">Média de leitura</option>");
+                        out.println("<option value=\"porcento\">Porcentagem já lida</option>");
+                        out.println("<option value=\"qtd\">Quantidade de línguas</option>");
+                        out.println("</select>");
+                        out.println("<input type=\"button\" value=\"OK\" id=\"selecionar_metodo\" onclick=\"modal('"+ livro.getId()+ "', '" + livro.getTitulo() +"', '" + livro.getAutor() + "', '" + idade +"', '"+ estimativa +"', '"+ progresso +"', '"+ qtdLinguas + "')\">");
+                        out.println("</article>");
+                        out.println("<article id=\"editar_excluir\">");
+                        out.println("<a href=\"LivroController?operacao=Remover&id="+ livro.getId() +"\"><img src=\"image/lista/excluir.png\"></a>");
+                        out.println("<a href=\"LivroController?operacao=Editar&id="+ livro.getId() +"\"><img src=\"image/lista/editar.png\" class=\"operacoes\"></a>");
+                        out.println("</article>");
+                        out.println("</section>");
+                    }
                 }
             %>               
             
