@@ -29,7 +29,7 @@ public class LivroDAO {
 			String sql = "INSERT INTO `livro`"
 					+ "(`titulo`, `autor`, `genero`, `editora`, `linguas`, `avaliacao`, `anoLancamento`, `qtdPaginasTotal`, `qtdPaginasLidas`, `login_id`) "
 					+ "VALUES "
-					+ "(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+					+ "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			
 			statement = conexao.prepareStatement(sql);
 			statement.setString(1, livro.getTitulo());

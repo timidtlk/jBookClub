@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="model.LivroDTO, java.util.ArrayList" %>
+<%@ page import="model.Livro, java.util.ArrayList, model.Usuario" %>
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
@@ -11,6 +11,13 @@
         <title>jBookClub - Lista de livros</title>
     </head>
     <body>
+        <%
+            Usuario usuario = (Usuario) session.getAttribute("usuario");
+            if (usuario == null) {
+                response.sendRedirect("/index.jsp");
+            }
+        %>
+
         <div id="fundo">
             <div>
                 <section id="modal">
@@ -33,10 +40,35 @@
                 <img src="image/lista/livros.png" id="livros">
                 <h1>jBookClub</h1>
             </section>
-            <section>
-                <a href="index.html">
-                    <img src="image/lista/sair.png" id="sair">
-                </a>
+            <section id="menu_perfil">
+                <article>
+                    <h3>Olá, <%= usuario.login() %></h3>
+                    <img src="image/lista/perfil.png" id="img_perfil" onclick="menu()">
+                </article>
+                <article id="menu">
+                    <ul>
+                        <li>
+                            <a href="cadastrar.html">
+                                <span class="texto_menu">NOVO LIVRO</span>
+                                <span class="img_menu"><img src="image/lista/adicionar_livros.png"></span>
+                            </a>
+                        </li>
+                        <hr>
+                        <li>
+                            <a href="UsuarioController?operacao=Sair">
+                                <span class="texto_menu">SAIR</span>
+                                <span class="img_menu"><img src="image/lista/sair.png"></span>
+                            </a>
+                        </li>
+                        <hr>
+                        <li id="remover">
+                            <a href="UsuarioController?operacao=Excluir">
+                                <span class="texto_menu">REMOVER CONTA</span>
+                                <span class="img_menu"><img src="image/lista/excluir-usuario.png"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </article>
             </section>
         </header>
         
@@ -44,35 +76,39 @@
         
             <%
                 @SuppressWarnings("unchecked")
-                ArrayList<LivroDTO> lista = (ArrayList<LivroDTO>) request.getAttribute("lista"); 
-            
-                for (LivroDTO livro : lista) {
+                ArrayList<Livro> lista = (ArrayList<Livro>) request.getAttribute("lista"); 
 
-                    int idade = livro.getIdadeLivro();
-                    String estimativa = String.format("%d horas, %d minutos e %d segundos", livro.getEstimativaLeitura()[0], livro.getEstimativaLeitura()[1], livro.getEstimativaLeitura()[2]);
-                    String progresso = String.format("%.2f", livro.getProgressoPcent());
-                    int qtdLinguas = livro.getQtdLinguas();
+                if (lista == null) 
+                    out.println("");
+                else {
+                    for (Livro livro : lista) {
 
-                    out.println("<section>"
-                                +"<article>"
-                                        +"<img src=\"image/lista/livro.png\" class=\"capa\">"
-                                +"</article>");
-                    out.println("<article>");
-                    out.println("<h1>"+ livro.getTitulo() +"</h1>");
-                    out.println("<h2>"+ livro.getAutor() +"</h2>");
-                    out.println("<select id=\"select"+ livro.getId() +"\">");
-                    out.println("<option value=\"idade\">Obter idade do livro</option>");
-                    out.println("<option value=\"media\">Média de leitura</option>");
-                    out.println("<option value=\"porcento\">Porcentagem já lida</option>");
-                    out.println("<option value=\"qtd\">Quantidade de línguas</option>");
-                    out.println("</select>");
-                    out.println("<input type=\"button\" value=\"OK\" id=\"selecionar_metodo\" onclick=\"modal('"+ livro.getId()+ "', '" + livro.getTitulo() +"', '" + livro.getAutor() + "', '" + idade +"', '"+ estimativa +"', '"+ progresso +"', '"+ qtdLinguas + "')\">");
-                    out.println("</article>");
-                    out.println("<article id=\"editar_excluir\">");
-                    out.println("<a href=\"Livro?operacao=Remover&id="+ livro.getId() +"\"><img src=\"image/lista/excluir.png\"></a>");
-                    out.println("<a href=\"Livro?operacao=Editar&id="+ livro.getId() +"\"><img src=\"image/lista/editar.png\" class=\"operacoes\"></a>");
-                    out.println("</article>");
-                    out.println("</section>");
+                        int idade = livro.getIdadeLivro();
+                        String estimativa = String.format("%d horas, %d minutos e %d segundos", livro.getEstimativaLeitura()[0], livro.getEstimativaLeitura()[1], livro.getEstimativaLeitura()[2]);
+                        String progresso = String.format("%.2f", livro.getProgressoPcent());
+                        int qtdLinguas = livro.getQtdLinguas();
+
+                        out.println("<section>"
+                                    +"<article>"
+                                            +"<img src=\"image/lista/livro.png\" class=\"capa\">"
+                                    +"</article>");
+                        out.println("<article>");
+                        out.println("<h1>"+ livro.getTitulo() +"</h1>");
+                        out.println("<h2>"+ livro.getAutor() +"</h2>");
+                        out.println("<select id=\"select"+ livro.getId() +"\">");
+                        out.println("<option value=\"idade\">Obter idade do livro</option>");
+                        out.println("<option value=\"media\">Média de leitura</option>");
+                        out.println("<option value=\"porcento\">Porcentagem já lida</option>");
+                        out.println("<option value=\"qtd\">Quantidade de línguas</option>");
+                        out.println("</select>");
+                        out.println("<input type=\"button\" value=\"OK\" class=\"selecionar_metodo\" onclick=\"modal('"+ livro.getId()+ "', '" + livro.getTitulo() +"', '" + livro.getAutor() + "', '" + idade +"', '"+ estimativa +"', '"+ progresso +"', '"+ qtdLinguas + "')\">");
+                        out.println("</article>");
+                        out.println("<article class=\"editar_excluir\">");
+                        out.println("<a href=\"LivroController?operacao=Remover&id="+ livro.getId() +"\"><img src=\"image/lista/excluir.png\"></a>");
+                        out.println("<a href=\"LivroController?operacao=Editar&id="+ livro.getId() +"\"><img src=\"image/lista/editar.png\" class=\"operacoes\"></a>");
+                        out.println("</article>");
+                        out.println("</section>");
+                    }
                 }
             %>               
             
@@ -111,6 +147,18 @@
             let modal = document.querySelector("div#fundo")
             let fechar = document.querySelector("img#fechar")
             modal.style.display = "none"
+        }
+
+        function menu(){
+            let menu = document.getElementById('menu')
+
+            if(menu.style.visibility == "visible"){
+                menu.style.visibility = "hidden"
+                menu.style.opacity = "0"
+            } else{
+                menu.style.visibility = "visible"
+                menu.style.opacity = "1"
+            }
         }
     </script>
 

@@ -34,6 +34,10 @@
                             <input type="text" id="titulo" name="titulo" placeholder="Título do livro" value="<%= livro.getTitulo() %>" required>
                         </p>
                         <p>
+                            <label for="autor"></label>
+                            <input type="text" id="autor" name="autor" placeholder="Autor" value="<%= livro.getAutor() %>" required>
+                        </p>
+                        <p>
                             <label for="genero"></label>
                             <input type="text" id="genero" name="genero" placeholder="Gênero" value="<%= livro.getGenero() %>" required>
                         </p>

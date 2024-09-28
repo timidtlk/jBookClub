@@ -5,7 +5,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="icon" type="image/x-icon" href="../image/lista/livros.png">
+        <link rel="icon" type="image/x-icon" href="image/lista/livros.png">
         <link rel="stylesheet" href="css/cadastro.css">
         <title>jBookClub - Cadastro</title>
     </head>
@@ -13,7 +13,7 @@
         <main>
             <section>
                 <article>
-                    <a href="../index.html"><img src="../image/lista/livros.png"></a>
+                    <a href="index.html"><img src="image/lista/livros.png"></a>
                 </article>
                 <article>
                     <p id="mensagem" style="color: red"><%= (request.getAttribute("erro") != null) ? request.getAttribute("erro") : "" %></p>
@@ -28,11 +28,11 @@
                         </p>
                         <p>
                             <label for="senha"></label>
-                            <input type="password" id="passwordID" name="password" placeholder="Senha" required>
+                            <input type="password" id="passwordID" oninput="confirmarSenha(this)" name="password" placeholder="Senha" required>
                         </p>
                         <p>
                             <label for="senhaConfirma"></label>
-                            <input type="password" id="confirmID" name="confirm" placeholder="Confirme sua senha" required>
+                            <input type="password" id="confirmID" oninput="confirmarSenha(this)" name="confirm" placeholder="Confirme sua senha" required>
                         </p>
                         <p>
                             <label for="cpf"></label>
@@ -47,7 +47,7 @@
                             <input type="tel" id="telefone" maxlength="15" onkeyup="handlePhone(event)" name="telefone" placeholder="Telefone: (xx)xxxxx-xxxx" required>
                         </p>
                         <p>
-                            <input type="submit" value="CADASTRAR" id="submitID">
+                            <input type="submit" value="CADASTRAR" name="operacao" id="submitID">
                         </p>
                     </form>
                 </article>

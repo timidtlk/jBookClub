@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="model.LivroDTO, java.time.LocalDate, java.time.format.DateTimeFormatter" %>
+<%@ page import="model.Livro, java.time.LocalDate, java.time.format.DateTimeFormatter" %>
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
@@ -13,7 +13,7 @@
     <body>
 
         <%
-    		LivroDTO livro = (LivroDTO) request.getAttribute("livro");
+    		Livro livro = (Livro) request.getAttribute("livro");
 	    	LocalDate localDate = livro.getAnoLancamento();
 	    	DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
 	    	String ano = localDate.format(formatter);
@@ -26,12 +26,16 @@
                     <h1>Edite seu livro</h1>
                 </article>
                 <article id="formulario">
-                    <form action="Livro" method="post">
+                    <form action="LivroController" method="post">
 
                         <input type="text" id="id" name="id" readonly placeholder="ID" value="<%= livro.getId() %>" style="display: none">
                         <p>
                             <label for="titulo"></label>
                             <input type="text" id="titulo" name="titulo" placeholder="Título do livro" value="<%= livro.getTitulo() %>" required>
+                        </p>
+                        <p>
+                            <label for="autor"></label>
+                            <input type="text" id="autor" name="autor" placeholder="Autor" value="<%= livro.getAutor() %>" required>
                         </p>
                         <p>
                             <label for="genero"></label>

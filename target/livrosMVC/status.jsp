@@ -24,7 +24,7 @@
                 </article>
                 <article style=<%= (status) ? "color: #5a932b;" :  "color: rgb(189, 55, 55);" %>>
                     <h1><%= mensagem %></h1>
-                    <a href="index.html">
+                    <a href="infoLivros.html">
                         <input type="button" value="VOLTAR">
                     </a>
                 </article>

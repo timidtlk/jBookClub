@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="model.Livro, java.util.ArrayList" %>
+<%@ page import="model.Livro, java.util.ArrayList, model.Usuario" %>
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
@@ -12,7 +12,8 @@
     </head>
     <body>
         <%
-            if (session.getAttribute("usuario") == null) {
+            Usuario usuario = (Usuario) session.getAttribute("usuario");
+            if (usuario == null) {
                 response.sendRedirect("/index.jsp");
             }
         %>
@@ -39,10 +40,35 @@
                 <img src="image/lista/livros.png" id="livros">
                 <h1>jBookClub</h1>
             </section>
-            <section>
-                <a href="index.html">
-                    <img src="image/lista/sair.png" id="sair">
-                </a>
+            <section id="menu_perfil">
+                <article>
+                    <h3>Olá, <%= usuario.login() %></h3>
+                    <img src="image/lista/perfil.png" id="img_perfil" onclick="menu()">
+                </article>
+                <article id="menu">
+                    <ul>
+                        <li>
+                            <a href="cadastrar.html">
+                                <span class="texto_menu">NOVO LIVRO</span>
+                                <span class="img_menu"><img src="image/lista/adicionar_livros.png"></span>
+                            </a>
+                        </li>
+                        <hr>
+                        <li>
+                            <a href="UsuarioController?operacao=Sair">
+                                <span class="texto_menu">SAIR</span>
+                                <span class="img_menu"><img src="image/lista/sair.png"></span>
+                            </a>
+                        </li>
+                        <hr>
+                        <li id="remover">
+                            <a href="UsuarioController?operacao=Excluir">
+                                <span class="texto_menu">REMOVER CONTA</span>
+                                <span class="img_menu"><img src="image/lista/excluir-usuario.png"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </article>
             </section>
         </header>
         
@@ -75,9 +101,9 @@
                         out.println("<option value=\"porcento\">Porcentagem já lida</option>");
                         out.println("<option value=\"qtd\">Quantidade de línguas</option>");
                         out.println("</select>");
-                        out.println("<input type=\"button\" value=\"OK\" id=\"selecionar_metodo\" onclick=\"modal('"+ livro.getId()+ "', '" + livro.getTitulo() +"', '" + livro.getAutor() + "', '" + idade +"', '"+ estimativa +"', '"+ progresso +"', '"+ qtdLinguas + "')\">");
+                        out.println("<input type=\"button\" value=\"OK\" class=\"selecionar_metodo\" onclick=\"modal('"+ livro.getId()+ "', '" + livro.getTitulo() +"', '" + livro.getAutor() + "', '" + idade +"', '"+ estimativa +"', '"+ progresso +"', '"+ qtdLinguas + "')\">");
                         out.println("</article>");
-                        out.println("<article id=\"editar_excluir\">");
+                        out.println("<article class=\"editar_excluir\">");
                         out.println("<a href=\"LivroController?operacao=Remover&id="+ livro.getId() +"\"><img src=\"image/lista/excluir.png\"></a>");
                         out.println("<a href=\"LivroController?operacao=Editar&id="+ livro.getId() +"\"><img src=\"image/lista/editar.png\" class=\"operacoes\"></a>");
                         out.println("</article>");
@@ -121,6 +147,18 @@
             let modal = document.querySelector("div#fundo")
             let fechar = document.querySelector("img#fechar")
             modal.style.display = "none"
+        }
+
+        function menu(){
+            let menu = document.getElementById('menu')
+
+            if(menu.style.visibility == "visible"){
+                menu.style.visibility = "hidden"
+                menu.style.opacity = "0"
+            } else{
+                menu.style.visibility = "visible"
+                menu.style.opacity = "1"
+            }
         }
     </script>
 

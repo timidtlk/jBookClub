@@ -1,23 +1,27 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>jBookClub - Login</title>
-    </head>
-    <body>
-        <h1>Login</h1>
-
-        <form action="UsuarioController" method="post">
-            <label for="loginID">Login: </label>
-            <input type="text" name="login" id="loginID">
-
-            <label for="passwordID">Senha: </label>
-            <input type="password" name="password" id="passwordID">
-
-            <input type="submit" value="Entrar" name="operacao">
-        </form>
-
-        <a href="cadastrarUsuario.html">Não possui uma conta na nossa aplicação?</a>
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="image/lista/livros.png">
+    <link rel="stylesheet" href="css/index.css">
+    <title>jBookClub</title>
+</head>
+<body>
+    <main>
+        <section id="titulo">
+            <h1>jBookClub</h1>
+            <h2>Um lugar para organizar sua lista de leitura</h2>
+        </section>
+        <section id="botoes">
+            <a href="login.jsp">
+                <h3>LOGIN</h3>
+            </a>
+            <a href="cadastrarUsuario.jsp">
+                <h3>CADASTRE-SE</h3>
+            </a>
+        </section>
+    </main>
+    
+</body>
 </html>

@@ -83,7 +83,7 @@ public class UsuarioController extends HttpServlet {
             String cadastro = uDAO.cadastrarUsuario(usuario);
     
             if (cadastro.equals("Cadastro foi realizado com sucesso!")) {
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/login.jsp");
                 dispatcher.forward(request, response);
             } else {
                 request.setAttribute("erro", "Houve um erro durante o cadastro. Por favor, tente mais tarde");
@@ -100,7 +100,7 @@ public class UsuarioController extends HttpServlet {
         Usuario verifica = uDAO.existeUsuario(login, "");
         if (verifica == null) {
             request.setAttribute("erro", "Não existe um usuário com esse login. Cadastre-se no site");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/login.jsp");
             dispatcher.forward(request, response);
         }
         verifica = null;
@@ -111,11 +111,11 @@ public class UsuarioController extends HttpServlet {
             HttpSession session = request.getSession();
             session.setAttribute("usuario", usuario);
 
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/lista.jsp");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/infoLivros.html");
             dispatcher.forward(request, response);
         } else {
             request.setAttribute("erro", "A senha inserida está incorreta");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/login.jsp");
             dispatcher.forward(request, response);
         }
     }
@@ -124,7 +124,7 @@ public class UsuarioController extends HttpServlet {
 		HttpSession session = request.getSession();
 		session.invalidate();
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/index.html");
 		dispatcher.forward(request, response);
 	}
 
@@ -135,7 +135,7 @@ public class UsuarioController extends HttpServlet {
         uDAO.excluirUsuario(usuario.id());
 		
         request.setAttribute("erro", "Usuário excluído com sucesso!");
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/login.jsp");
 		dispatcher.forward(request, response);
 	}
 }
