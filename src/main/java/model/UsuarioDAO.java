@@ -1,140 +1,94 @@
 package model;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.UUID;
 
-import javax.sql.DataSource;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
+import entity.Usuario;
 
 public class UsuarioDAO {
-    private DataSource dataSource;
+    private EntityManagerFactory emf;
 	
-	public UsuarioDAO(DataSource dataSource) {
+	public UsuarioDAO(EntityManagerFactory emf) {
 		super();
-		this.dataSource = dataSource;
+		this.emf = emf;
 	}
 
     public String cadastrarUsuario(Usuario usuario) {
-        Connection conexao = null;
-		PreparedStatement statement = null;
-		String resultado;
+        EntityManager em = emf.createEntityManager();
+		String resultado = "Ocorreu um erro";
+		usuario.setId(UUID.randomUUID().toString());
 		
 		try {
-			conexao = dataSource.getConnection();
-			
-			String sql = "INSERT INTO `usuario`(`id`, `login`, `password`, `email`, `cpf`, `telefone`, `nome`) VALUES (?,?,?,?,?,?,?)";
-			
-			statement = conexao.prepareStatement(sql);
-			statement.setString(1, UUID.randomUUID().toString());
-			statement.setString(2, usuario.login());
-			statement.setString(3, usuario.password());
-			statement.setString(4, usuario.email());
-			statement.setString(5, usuario.cpf());
-			statement.setString(6, usuario.telefone());
-			statement.setString(7, usuario.nome());
-			
-			resultado = (statement.executeUpdate() == 1) ? "Cadastro foi realizado com sucesso!" : "Ocorreu um erro";
-		} catch (SQLException e) {
+			em.getTransaction().begin();
+			em.persist(usuario);
+			em.getTransaction().commit();
+			resultado = "Cadastro foi realizado com sucesso!";
+		} catch (Exception e) {
 			e.printStackTrace();
-			resultado = "Ocorreu um erro";
 		} finally {
-			fecharConexao(conexao, statement, null);
+			em.close();
 		}
 		
 		return resultado;
     }
 
-	public Usuario existeUsuario(String login, String email) {
-		Usuario usuario = null;
-		Connection conexao = null;
-		PreparedStatement statement = null;
-		ResultSet resultado = null;
+	public boolean existeUsuario(String login, String email) {
+		EntityManager em = emf.createEntityManager();
+		boolean achou = false;
 		
 		try {
-			conexao = dataSource.getConnection();
-			String sql = "SELECT login, email FROM usuario WHERE login = ? OR email = ?";
-			statement = conexao.prepareStatement(sql);
-			statement.setString(1,  login);
-			statement.setString(2,  email);
-			resultado = statement.executeQuery();
-			
-			if(resultado.next()) {
-				usuario = new Usuario(login, email);
-			}
-		} catch(SQLException e) {
+			Query query = em.createQuery("from " + Usuario.class + " where login = :l and email = :e");
+			query.setParameter("l", login);
+			query.setParameter("e", email);
+			achou = (query.getResultList().size() > 0) ? true : false;
+		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
-			fecharConexao(conexao, statement, resultado);
+			em.close();
 		}
-		return usuario;
+		return achou;
 	}
 
 	public boolean excluirUsuario(String id) {
-		Connection conexao = null;
-		PreparedStatement statement = null;
-		int resultado = 0;
-		
+		EntityManager em = emf.createEntityManager();
+		boolean status = false;
+
 		try {
-			conexao = dataSource.getConnection();
-			String sql = "DELETE FROM `usuario` WHERE id = ?";
-			statement = conexao.prepareStatement(sql);
-			statement.setString(1,  id);
-			resultado = statement.executeUpdate();
-		} catch(SQLException e) {
+			Usuario usuario = em.find(Usuario.class, id);
+			em.getTransaction().begin();
+			em.remove(usuario);
+			em.getTransaction().commit();
+			status = true;
+		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			fecharConexao(conexao, statement, null);
+			em.close();
 		}
-		return (resultado == 1) ? true : false;
+
+		return status;
 	}
 
 	public Usuario fazerLogin(String login, String senha) {
 		Usuario usuario = null;
-		Connection conexao = null;
-		PreparedStatement statement = null;
-		ResultSet resultado = null;
+		EntityManager em = emf.createEntityManager();
 		
 		try {
-			conexao = dataSource.getConnection();
-			String sql = "SELECT * FROM usuario WHERE login = ?";
-			statement = conexao.prepareStatement(sql);
-			statement.setString(1,  login);
-			resultado = statement.executeQuery();
+			Query query = em.createQuery("from" + Usuario.class + " where login = :l");
+			query.setParameter("l", login);
+			usuario = (Usuario) query.getSingleResult();
 			
-			if(resultado.next()) {
-				if (BCrypt.verifyer().verify(senha.toCharArray(), resultado.getString("password").toCharArray()).verified) {
-					String id = resultado.getString("id");
-					String nome = resultado.getString("nome");
-					String email = resultado.getString("email");
-					String cpf = resultado.getString("cpf");
-					String telefone = resultado.getString("telefone");
-					String password = resultado.getString("password");
-
-					usuario = new Usuario(id, nome, login, email, cpf, telefone, password);
-				}
+			if (!BCrypt.verifyer().verify(senha.toCharArray(), usuario.getPassword().toCharArray()).verified) {
+				usuario = null;
 			}
-		} catch(SQLException e) {
+		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
-			fecharConexao(conexao, statement, resultado);
+			em.close();
 		}
 		return usuario;
-	}
-
-    private void fecharConexao(Connection conexao, PreparedStatement statement, ResultSet resultado) {
-		try {
-			if (conexao != null)
-				conexao.close();
-			if (statement != null)
-				statement.close();
-			if (resultado != null)
-				resultado.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
 	}
 }

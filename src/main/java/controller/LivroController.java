@@ -7,9 +7,11 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 
-import javax.sql.DataSource;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
-import jakarta.annotation.Resource;
+import entity.Livro;
+import entity.Usuario;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -18,8 +20,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.LivroDAO;
-import model.Usuario;
-import model.Livro;
 
 @WebServlet("/LivroController")
 public class LivroController extends HttpServlet {
@@ -27,12 +27,11 @@ public class LivroController extends HttpServlet {
 	private static final long serialVersionUID = 820928843794152937L;
 	
 	private LivroDAO lDAO;
-	@Resource(name="bancoLivros")
-	private DataSource dataSource;
+	private EntityManagerFactory emf = Persistence.createEntityManagerFactory("bancoLivros");
 	
 	@Override
 	public void init() throws ServletException{
-		lDAO = new LivroDAO(dataSource);
+		lDAO = new LivroDAO(emf);
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -92,7 +91,7 @@ public class LivroController extends HttpServlet {
 		double qtdPgsTotal = Double.parseDouble(request.getParameter("qtdPgsTotal"));
 		double qtdPgsLidas = Double.parseDouble(request.getParameter("qtdPgsLidas"));
 		
-		Livro livro = new Livro(0, titulo, autor, genero, editora, linguas, avaliacao, anoLancamento, qtdPgsTotal, qtdPgsLidas, usuario.id());
+		Livro livro = new Livro("id", titulo, autor, genero, editora, linguas, avaliacao, anoLancamento, qtdPgsTotal, qtdPgsLidas, usuario);
 		
 		boolean status = lDAO.inserirLivro(livro);
 		
@@ -104,7 +103,7 @@ public class LivroController extends HttpServlet {
 	}
 	
 	private void atualizarLivro(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int id = Integer.parseInt(request.getParameter("id"));
+		String id = request.getParameter("id");
 		String titulo = request.getParameter("titulo");
 		String autor = request.getParameter("autor");
 		String genero = request.getParameter("genero");
@@ -127,7 +126,7 @@ public class LivroController extends HttpServlet {
 
 		Usuario usuario = (Usuario) session.getAttribute("usuario");
 		
-		Livro livro = new Livro(id, titulo, autor, genero, editora, linguas, avaliacao, anoLancamento, qtdPgsTotal, qtdPgsLidas, usuario.id());
+		Livro livro = new Livro(id, titulo, autor, genero, editora, linguas, avaliacao, anoLancamento, qtdPgsTotal, qtdPgsLidas, usuario);
 		
 		boolean status = lDAO.modificarLivro(livro);
 		
@@ -145,7 +144,7 @@ public class LivroController extends HttpServlet {
 
 		Usuario usuario = (Usuario) session.getAttribute("usuario");
 
-		livros = lDAO.consultarLivros(usuario.id());
+		livros = lDAO.consultarLivros(usuario);
 		
 		request.setAttribute("lista", livros);
 		
@@ -154,10 +153,7 @@ public class LivroController extends HttpServlet {
 	}
 
 	private void excluirLivro(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
-		Usuario usuario = (Usuario) session.getAttribute("usuario");
-		
-		boolean status = lDAO.excluirLivro(Integer.parseInt(request.getParameter("id")), usuario.id());
+		boolean status = lDAO.excluirLivro(Integer.parseInt(request.getParameter("id")));
 		
 		request.setAttribute("status", status);
 		request.setAttribute("operacao", "exclui");
@@ -167,10 +163,7 @@ public class LivroController extends HttpServlet {
 	}
 	
 	private void modificarLivro(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
-		Usuario usuario = (Usuario) session.getAttribute("usuario");
-
-		Livro livro = lDAO.procurarLivro(Integer.parseInt(request.getParameter("id")), usuario.id());
+		Livro livro = lDAO.procurarLivro(Integer.parseInt(request.getParameter("id")));
 		
 		request.setAttribute("livro", livro);
 		

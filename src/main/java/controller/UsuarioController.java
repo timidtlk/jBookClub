@@ -2,10 +2,11 @@ package controller;
 
 import java.io.IOException;
 
-import javax.sql.DataSource;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
-import jakarta.annotation.Resource;
+import entity.Usuario;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -13,7 +14,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.Usuario;
 import model.UsuarioDAO;
 
 @WebServlet("/UsuarioController")
@@ -22,12 +22,11 @@ public class UsuarioController extends HttpServlet {
     private static final long serialVersionUID = 820928843794152937L;
 	
 	private UsuarioDAO uDAO;
-	@Resource(name="bancoLivros")
-	private DataSource dataSource;
+	private EntityManagerFactory emf = Persistence.createEntityManagerFactory("bancoLivros");
 
     @Override
     public void init() throws ServletException {
-        uDAO = new UsuarioDAO(dataSource);
+        uDAO = new UsuarioDAO(emf);
     }
     
     @Override
@@ -72,8 +71,8 @@ public class UsuarioController extends HttpServlet {
         String telefone = request.getParameter("telefone");
         String password = BCrypt.withDefaults().hashToString(6, request.getParameter("password").toCharArray());
 
-        Usuario verifica = uDAO.existeUsuario(login, email);
-        if (verifica != null) {
+        boolean verifica = uDAO.existeUsuario(login, email);
+        if (verifica) {
             request.setAttribute("erro", "Já existe um usuário com o mesmo login ou e-mail. Por favor, insira outros");
             RequestDispatcher dispatcher = request.getRequestDispatcher("/cadastrarUsuario.jsp");
             dispatcher.forward(request, response);
@@ -97,13 +96,12 @@ public class UsuarioController extends HttpServlet {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
 
-        Usuario verifica = uDAO.existeUsuario(login, "");
-        if (verifica == null) {
+        boolean verifica = uDAO.existeUsuario(login, "");
+        if (verifica) {
             request.setAttribute("erro", "Não existe um usuário com esse login. Cadastre-se no site");
             RequestDispatcher dispatcher = request.getRequestDispatcher("/login.jsp");
             dispatcher.forward(request, response);
         }
-        verifica = null;
 
         Usuario usuario = uDAO.fazerLogin(login, password);
 
@@ -132,7 +130,7 @@ public class UsuarioController extends HttpServlet {
 		HttpSession session = request.getSession();
 		Usuario usuario = (Usuario) session.getAttribute("usuario");
 
-        uDAO.excluirUsuario(usuario.id());
+        uDAO.excluirUsuario(usuario.getId());
 		
         request.setAttribute("erro", "Usuário excluído com sucesso!");
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/login.jsp");
