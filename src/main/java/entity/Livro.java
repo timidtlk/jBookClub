@@ -28,8 +28,8 @@ public class Livro {
 	private LocalDate anoLancamento;
 	private double qtdPaginasTotal;
 	private double qtdPaginasLidas;
-	@ManyToOne(optional = false, cascade = {CascadeType.REMOVE})
-	private Usuario user;
+	@ManyToOne(optional = false)
+	private Usuario usuario;
 
 	public int getIdadeLivro() {
 		LocalDate now = LocalDate.now();
@@ -37,7 +37,7 @@ public class Livro {
 		return Period.between(anoLancamento, now).getYears();		
 	}
 	
-	public int[] getEstimativaLeitura() {
+	public String getEstimativaLeitura() {
 		double tempoTotal = this.qtdPaginasTotal * 60;
 		
 		int s = 0, m = 0, h = 0;
@@ -50,13 +50,12 @@ public class Livro {
 		h += m/60;
 		m = m % 60;
 		
-		int[] tempo = {h, m, s};
-		
-		return tempo;
+		return String.format("%d horas, %d minutos e %d segundos", h, m, s);
 	}
 	
-	public double getProgressoPcent() {
-		return (double) Math.round((qtdPaginasLidas / qtdPaginasTotal) * 100.0);
+	public String getProgressoPcent() {
+		double n = (double) Math.round((qtdPaginasLidas / qtdPaginasTotal) * 100.0);
+		return String.format("%.2f", n);
 	}
 	
 	public int getQtdLinguas() {

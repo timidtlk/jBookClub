@@ -61,7 +61,7 @@ public class LivroDAO {
 		ArrayList<Livro> listaLivro = new ArrayList<>();
 		
 		try {
-			Query query = em.createQuery("from " + Usuario.class + " where user = :u");
+			Query query = em.createQuery("from " + Livro.class.getName() + " where usuario = :u");
 			query.setParameter("u", user);
 			listaLivro = (ArrayList<Livro>) query.getResultList();
 		} catch (Exception e) {
@@ -96,6 +96,32 @@ public class LivroDAO {
 			em.getTransaction().begin();
 			em.remove(livro);
 			em.getTransaction().commit();
+			status = true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			em.close();
+		}
+
+		return status;
+	}
+
+	@SuppressWarnings("unchecked")
+	public boolean excluirLivros(Usuario usuario) {
+		EntityManager em = emf.createEntityManager();
+		boolean status = false;
+
+		try {
+			Query query = em.createQuery("from " + Livro.class.getName() + " where usuario = :u");
+			query.setParameter("u", usuario);
+			ArrayList<Livro> livros = (ArrayList<Livro>) query.getResultList();
+
+			em.getTransaction().begin();
+			for (Livro livro : livros) {
+				em.remove(livro);
+			}
+			em.getTransaction().commit();
+
 			status = true;
 		} catch (Exception e) {
 			e.printStackTrace();

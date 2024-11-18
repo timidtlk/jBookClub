@@ -1,5 +1,8 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page isELIgnored="false" %>
+<%@ page session="true" %>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -16,7 +19,7 @@
                 <a href="index.html"><img src="image/lista/livros.png"></a>
             </article>
             <article>
-                <p id="mensagem" style="color: red"><%= (request.getAttribute("erro") != null) ? request.getAttribute("erro") : "" %></p>
+                <p id="mensagem" style="color: red">${(not empty requestScope.erro) ? requestScope.erro : ""}</p>
                 <form action="UsuarioController" method="post">
                     <label for="username"></label>
                     <input type="text" id="username" name="login" placeholder="Nome de usuário" required>

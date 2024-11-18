@@ -97,7 +97,7 @@ public class UsuarioController extends HttpServlet {
         String password = request.getParameter("password");
 
         boolean verifica = uDAO.existeUsuario(login, "");
-        if (verifica) {
+        if (!verifica) {
             request.setAttribute("erro", "Não existe um usuário com esse login. Cadastre-se no site");
             RequestDispatcher dispatcher = request.getRequestDispatcher("/login.jsp");
             dispatcher.forward(request, response);
@@ -130,6 +130,7 @@ public class UsuarioController extends HttpServlet {
 		HttpSession session = request.getSession();
 		Usuario usuario = (Usuario) session.getAttribute("usuario");
 
+        
         uDAO.excluirUsuario(usuario.getId());
 		
         request.setAttribute("erro", "Usuário excluído com sucesso!");

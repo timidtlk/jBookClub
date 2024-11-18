@@ -1,5 +1,8 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page isELIgnored="false" %>
+<%@ page session="true" %>
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
@@ -10,20 +13,27 @@
         <title>jBookClub</title>
     </head>
 
-    <%
-        boolean status = (boolean) request.getAttribute("status");
-        String mensagem = ((boolean) request.getAttribute("status")) ? "Livro "+ request.getAttribute("operacao") +"do com sucesso!" : "Erro! Não foi possível "+ request.getAttribute("operacao") +"r o livro";
-    %>
+    <c:set var="operacao" value="${requestScope.operacao}"/>
+    <c:choose>
+        <c:when test="${requestScope.status}">
+            <c:set var="mensagem" value="Livro ${operacao}do com sucesso!" />
+        </c:when>
+        
+        <c:otherwise>
+            <c:set var="mensagem" value="Erro! Não foi possível ${operacao}r o livro" />
+        </c:otherwise>
+    </c:choose>
+    
 
-    <body onload=<%= (status) ? "imagens_cadastrado()" : "imagens_nao_cadastrado()" %>>
+    <body onload="${(requestScope.status) ? "imagens_cadastrado()" : "imagens_nao_cadastrado()"}" >
         <main>
             
             <section>
                 <article>
                     <img src="">
                 </article>
-                <article style=<%= (status) ? "color: #5a932b;" :  "color: rgb(189, 55, 55);" %>>
-                    <h1><%= mensagem %></h1>
+                <article style="${(requestScope.status) ? "color: #5a932b;" : "color: rgb(189, 55, 55);"}">
+                    <h1>${mensagem}</h1>
                     <a href="infoLivros.html">
                         <input type="button" value="VOLTAR">
                     </a>

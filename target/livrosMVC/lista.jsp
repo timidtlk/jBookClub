@@ -1,6 +1,9 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="model.Livro, java.util.ArrayList, model.Usuario" %>
+<%@ page isELIgnored="false" %>
+<%@ page session="true" %>
+<%@ page import="entity.Livro, java.util.ArrayList, entity.Usuario" %>
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
@@ -11,12 +14,10 @@
         <title>jBookClub - Lista de livros</title>
     </head>
     <body>
-        <%
-            Usuario usuario = (Usuario) session.getAttribute("usuario");
-            if (usuario == null) {
-                response.sendRedirect("/index.jsp");
-            }
-        %>
+        <c:set var="usuario" value="${sessionScope.usuario}"/>
+        <c:if test="${empty usuario}" >
+            <meta http-equiv="refresh" content="0; url=index.html">
+        </c:if>
 
         <div id="fundo">
             <div>
@@ -42,7 +43,7 @@
             </section>
             <section id="menu_perfil">
                 <article>
-                    <h3>Olá, <%= usuario.login() %></h3>
+                    <h3>Olá, ${usuario.login}</h3>
                     <img src="image/lista/perfil.png" id="img_perfil" onclick="menu()">
                 </article>
                 <article id="menu">
@@ -74,44 +75,45 @@
         
         <main>
         
-            <%
-                @SuppressWarnings("unchecked")
-                ArrayList<Livro> lista = (ArrayList<Livro>) request.getAttribute("lista"); 
+            <c:set var="lista" value="${requestScope.lista}"/>
 
-                if (lista == null) 
-                    out.println("");
-                else {
-                    for (Livro livro : lista) {
+            <c:choose>
+                <c:when test="${empty lista}">
+                    <p></p>
+                </c:when>
+                
+                <c:otherwise>
+                    <c:forEach items="${lista}" var="livro">
 
-                        int idade = livro.getIdadeLivro();
-                        String estimativa = String.format("%d horas, %d minutos e %d segundos", livro.getEstimativaLeitura()[0], livro.getEstimativaLeitura()[1], livro.getEstimativaLeitura()[2]);
-                        String progresso = String.format("%.2f", livro.getProgressoPcent());
-                        int qtdLinguas = livro.getQtdLinguas();
+                        <c:set var="idade" value="${livro.getIdadeLivro()}"/>
+                        <c:set var="estimativa" value="${livro.getEstimativaLeitura()}"/>
+                        <c:set var="progresso" value="${livro.getProgressoPcent()}" />
+                        <c:set var="linguas" value="${livro.getQtdLinguas()}" />
 
-                        out.println("<section>"
-                                    +"<article>"
-                                            +"<img src=\"image/lista/livro.png\" class=\"capa\">"
-                                    +"</article>");
-                        out.println("<article>");
-                        out.println("<h1>"+ livro.getTitulo() +"</h1>");
-                        out.println("<h2>"+ livro.getAutor() +"</h2>");
-                        out.println("<select id=\"select"+ livro.getId() +"\">");
-                        out.println("<option value=\"idade\">Obter idade do livro</option>");
-                        out.println("<option value=\"media\">Média de leitura</option>");
-                        out.println("<option value=\"porcento\">Porcentagem já lida</option>");
-                        out.println("<option value=\"qtd\">Quantidade de línguas</option>");
-                        out.println("</select>");
-                        out.println("<input type=\"button\" value=\"OK\" class=\"selecionar_metodo\" onclick=\"modal('"+ livro.getId()+ "', '" + livro.getTitulo() +"', '" + livro.getAutor() + "', '" + idade +"', '"+ estimativa +"', '"+ progresso +"', '"+ qtdLinguas + "')\">");
-                        out.println("</article>");
-                        out.println("<article class=\"editar_excluir\">");
-                        out.println("<a href=\"LivroController?operacao=Remover&id="+ livro.getId() +"\"><img src=\"image/lista/excluir.png\"></a>");
-                        out.println("<a href=\"LivroController?operacao=Editar&id="+ livro.getId() +"\"><img src=\"image/lista/editar.png\" class=\"operacoes\"></a>");
-                        out.println("</article>");
-                        out.println("</section>");
-                    }
-                }
-            %>               
-            
+                        <section>
+                            <article>
+                                <img src="image/lista/livro.png" class="capa">
+                            </article>
+                            <article>
+                                <h1>${livro.titulo}</h1>
+                                <h2>${livro.autor}</h2>
+                                <select id="select${livro.id}">
+                                    <option value="idade">Obter idade do livro</option>
+                                    <option value="media">Média de leitura</option>
+                                    <option value="porcento">Porcentagem já lida</option>
+                                    <option value="qtd">Quantidade de línguas</option>
+                                </select>
+
+                                <input type="button" value="OK" class="selecionar_metodo" onclick="modal('${livro.id}', '${livro.titulo}', '${livro.autor}', '${idade}', '${estimativa}', '${progresso}', '${linguas}')">
+                            </article>
+                            <article class="editar_excluir">
+                                <a href="LivroController?operacao=Remover&id=${livro.id}"><img src="image/lista/excluir.png"></a>
+                                <a href="LivroController?operacao=Editar&id=${livro.id}"><img src="image/lista/editar.png" class="operacoes"></a>
+                            </article>
+                        </section>
+                    </c:forEach>
+                </c:otherwise>
+            </c:choose>            
         </main>
     </body>
 

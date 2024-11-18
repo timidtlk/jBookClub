@@ -41,7 +41,7 @@ public class UsuarioDAO {
 		boolean achou = false;
 		
 		try {
-			Query query = em.createQuery("from " + Usuario.class + " where login = :l and email = :e");
+			Query query = em.createQuery("from " + Usuario.class.getName() + " where login = :l or email = :e");
 			query.setParameter("l", login);
 			query.setParameter("e", email);
 			achou = (query.getResultList().size() > 0) ? true : false;
@@ -59,9 +59,12 @@ public class UsuarioDAO {
 
 		try {
 			Usuario usuario = em.find(Usuario.class, id);
+			new LivroDAO(emf).excluirLivros(usuario);
+
 			em.getTransaction().begin();
 			em.remove(usuario);
 			em.getTransaction().commit();
+
 			status = true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -77,7 +80,7 @@ public class UsuarioDAO {
 		EntityManager em = emf.createEntityManager();
 		
 		try {
-			Query query = em.createQuery("from" + Usuario.class + " where login = :l");
+			Query query = em.createQuery("from " + Usuario.class.getName() + " where login = :l");
 			query.setParameter("l", login);
 			usuario = (Usuario) query.getSingleResult();
 			

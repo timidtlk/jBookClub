@@ -1,6 +1,10 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="model.Livro, java.time.LocalDate, java.time.format.DateTimeFormatter" %>
+<%@ page isELIgnored="false" %>
+<%@ page session="true" %>
+<%@ page import="entity.Livro, java.time.LocalDate, java.time.format.DateTimeFormatter" %>
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
@@ -11,59 +15,53 @@
         <title>jBookClub - Edite seu livro</title>
     </head>
     <body>
-
-        <%
-    		Livro livro = (Livro) request.getAttribute("livro");
-	    	LocalDate localDate = livro.getAnoLancamento();
-	    	DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
-	    	String ano = localDate.format(formatter);
-    	%>
-
         <main>
             <section>
+                <c:set var="livro" value="${requestScope.livro}"/>
+
                 <article id="titulo_pag">
-                    <input type="text" id="id" name="id" readonly placeholder="ID" value="<%= livro.getId() %>" style="width: 2em; height: 2em; margin-left: 1em;">
+                    <input type="text" id="id" name="id" readonly placeholder="ID" value="${livro.id}" style="width: 2em; height: 2em; margin-left: 1em;">
                     <h1>Edite seu livro</h1>
                 </article>
                 <article id="formulario">
                     <form action="LivroController" method="post">
 
-                        <input type="text" id="id" name="id" readonly placeholder="ID" value="<%= livro.getId() %>" style="display: none">
+                        <input type="text" id="id" name="id" readonly placeholder="ID" value="${livro.id}" style="display: none">
                         <p>
                             <label for="titulo"></label>
-                            <input type="text" id="titulo" name="titulo" placeholder="Título do livro" value="<%= livro.getTitulo() %>" required>
+                            <input type="text" id="titulo" name="titulo" placeholder="Título do livro" value="${livro.titulo}" required>
                         </p>
                         <p>
                             <label for="autor"></label>
-                            <input type="text" id="autor" name="autor" placeholder="Autor" value="<%= livro.getAutor() %>" required>
+                            <input type="text" id="autor" name="autor" placeholder="Autor" value="${livro.autor}" required>
                         </p>
                         <p>
                             <label for="genero"></label>
-                            <input type="text" id="genero" name="genero" placeholder="Gênero" value="<%= livro.getGenero() %>" required>
+                            <input type="text" id="genero" name="genero" placeholder="Gênero" value="${livro.genero}" required>
                         </p>
                         <p>
                             <label for="editora"></label>
-                            <input type="text" id="editora" name="editora" placeholder="Editora" value="<%= livro.getEditora() %>" required>
+                            <input type="text" id="editora" name="editora" placeholder="Editora" value="${livro.editora}" required>
                         </p>
                         <p>
                             <label for="ano"></label>
-                            <input type="date" id="ano" name="anoLancamento" value="<%= ano %>" required>
+                            <input type="date" id="ano" name="anoLancamento" value="<fmt:formatDate pattern = "yyyy-MM-dd" value = "${livro.anoLancamento}" />" required>
                         </p>
                         <p>
                             <label for="qPag"></label>
-                            <input type="number" id="qPag" name="qtdPgsTotal" placeholder="Quantidade de páginas" min="0" value="<%= livro.getQtdPaginasTotal() %>" required>
+                            <input type="number" id="qPag" name="qtdPgsTotal" placeholder="Quantidade de páginas" min="0" value="${livro.qtdPaginasTotal}" required>
                         </p>
                         <p>
                             <label for="qPagLidas"></label>
-                            <input type="number" id="qPagLidas" name="qtdPgsLidas" placeholder="Quantidade de páginas lidas" min="0" value="<%= livro.getQtdPaginasLidas() %>" required>
+                            <input type="number" id="qPagLidas" name="qtdPgsLidas" placeholder="Quantidade de páginas lidas" min="0" value="${livro.qtdPaginasTotal}" required>
                         </p>
                         <p>
                             <label for="linguas"></label>
-                            <input type="text" id="linguas" name="linguas" placeholder="Línguas disponíveis" value="<%= livro.getLinguas() %>" required>
+                            <input type="text" id="linguas" name="linguas" placeholder="Línguas disponíveis" value="${livro.linguas}" required>
                         </p>
                         <p>
                             <label for="avaliacao"></label>
-                            <input type="text" id="avaliacao" name="avaliacao" placeholder="Avaliação" value="<%= livro.getAvaliacao() %>" required>
+                            <input type="text" id="avaliacao" name="avaliacao" placeholder="Avaliação" value="${livro.avaliacao}" required>
                         </p>
                         <p id="botoes">
                             <a href="Livro?operacao=Listar">
