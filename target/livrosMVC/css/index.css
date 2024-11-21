@@ -62,3 +62,12 @@ main section a{
 main section a:hover{
     transform: scale(1.2);
 }
+
+#ultimoLivro{
+    background-color: #cec0a97e;
+    color: #4e341d;
+    border: 2px dashed #1b2b4c;
+    width: 20%;
+    padding: 1vw;
+    font-family:Georgia, 'Times New Roman', Times, serif;
+}

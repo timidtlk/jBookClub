@@ -109,7 +109,7 @@ public class UsuarioController extends HttpServlet {
             HttpSession session = request.getSession();
             session.setAttribute("usuario", usuario);
 
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/infoLivros.html");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/infoLivros.jsp");
             dispatcher.forward(request, response);
         } else {
             request.setAttribute("erro", "A senha inserida está incorreta");

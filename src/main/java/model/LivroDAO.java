@@ -72,7 +72,7 @@ public class LivroDAO {
 		return listaLivro;
 	}
 	
-	public Livro procurarLivro(int id) {
+	public Livro procurarLivro(String id) {
 		EntityManager em = emf.createEntityManager();
 		Livro livro = null;
 		
@@ -87,7 +87,7 @@ public class LivroDAO {
 		return livro;
 	}
 	
-	public boolean excluirLivro(int id) {
+	public boolean excluirLivro(String id) {
 		EntityManager em = emf.createEntityManager();
 		boolean status = false;
 

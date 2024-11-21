@@ -4,7 +4,7 @@
     pageEncoding="UTF-8"%>
 <%@ page isELIgnored="false" %>
 <%@ page session="true" %>
-<%@ page import="entity.Livro, java.time.LocalDate, java.time.format.DateTimeFormatter" %>
+<%@ page import="entity.Livro, java.time.LocalDate, java.util.Date" %>
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
@@ -45,7 +45,7 @@
                         </p>
                         <p>
                             <label for="ano"></label>
-                            <input type="date" id="ano" name="anoLancamento" value="<fmt:formatDate pattern = "yyyy-MM-dd" value = "${livro.anoLancamento}" />" required>
+                            <input type="date" id="ano" name="anoLancamento" value="${requestScope.ano}" required>
                         </p>
                         <p>
                             <label for="qPag"></label>

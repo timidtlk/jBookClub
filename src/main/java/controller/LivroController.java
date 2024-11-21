@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import javax.persistence.EntityManagerFactory;
@@ -15,6 +16,7 @@ import entity.Usuario;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -98,6 +100,20 @@ public class LivroController extends HttpServlet {
 		request.setAttribute("status", status);
 		request.setAttribute("operacao", "inseri");
 		
+		if (status) {
+			Cookie cookieTitulo = new Cookie("titulo-"+usuario.getLogin(), titulo);
+			Cookie cookieAutor = new Cookie("autor-"+usuario.getLogin(), autor);
+			Cookie cookieAvaliacao = new Cookie("avaliacao-"+usuario.getLogin(), avaliacao);
+			
+			cookieTitulo.setMaxAge(60*60*24*365);
+			cookieAutor.setMaxAge(60*60*24*365);
+			cookieAvaliacao.setMaxAge(60*60*24*365);
+
+			response.addCookie(cookieTitulo);
+			response.addCookie(cookieAutor);
+			response.addCookie(cookieAvaliacao);
+		}
+
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/status.jsp");
 		dispatcher.forward(request, response);
 	}
@@ -153,7 +169,7 @@ public class LivroController extends HttpServlet {
 	}
 
 	private void excluirLivro(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		boolean status = lDAO.excluirLivro(Integer.parseInt(request.getParameter("id")));
+		boolean status = lDAO.excluirLivro(request.getParameter("id"));
 		
 		request.setAttribute("status", status);
 		request.setAttribute("operacao", "exclui");
@@ -163,9 +179,11 @@ public class LivroController extends HttpServlet {
 	}
 	
 	private void modificarLivro(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Livro livro = lDAO.procurarLivro(Integer.parseInt(request.getParameter("id")));
+		Livro livro = lDAO.procurarLivro(request.getParameter("id"));
 		
 		request.setAttribute("livro", livro);
+		DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
+		request.setAttribute("ano", formatter.format(livro.getAnoLancamento()));
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/edit.jsp");
 		dispatcher.forward(request, response);
