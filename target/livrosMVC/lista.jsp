@@ -19,23 +19,6 @@
             <meta http-equiv="refresh" content="0; url=index.html">
         </c:if>
 
-        <div id="fundo">
-            <div>
-                <section id="modal">
-                    <article>
-                        <img src="image/lista/livro.png">
-                    </article>
-                    <article>
-                        <h1 id="tituloModal">Título do livro</h1>
-                        <h2 id="autorModal">Autor</h2>
-                        <p id="mensagemModal">Mensagem do método</p>
-                    </article>
-                    <article>
-                        <img src="image/lista/fechar.png" id="fechar" onclick="fecharModal()">
-                    </article>
-                </section>
-            </div>
-        </div>
         <header>
             <section>
                 <img src="image/lista/livros.png" id="livros">
@@ -97,14 +80,19 @@
                             <article>
                                 <h1>${livro.titulo}</h1>
                                 <h2>${livro.autor}</h2>
-                                <select id="select${livro.id}">
-                                    <option value="idade">Obter idade do livro</option>
-                                    <option value="media">Média de leitura</option>
-                                    <option value="porcento">Porcentagem já lida</option>
-                                    <option value="qtd">Quantidade de línguas</option>
-                                </select>
+                                <form action="LivroController" method="get">
+                                    <input type="text" name="id" value="${livro.id}" hidden>
+                                    <select name="select">
+                                        <option value="idade">Obter idade do livro</option>
+                                        <option value="media">Média de leitura</option>
+                                        <option value="porcento">Porcentagem já lida</option>
+                                        <option value="qtd">Quantidade de línguas</option>
+                                    </select>
 
-                                <input type="button" value="OK" class="selecionar_metodo" onclick="modal('${livro.id}', '${livro.titulo}', '${livro.autor}', '${idade}', '${estimativa}', '${progresso}', '${linguas}')">
+                                    <input type="text" name="operacao" value="Metodo" hidden>
+
+                                    <input type="submit" value="OK" class="selecionar_metodo">
+                                </form>
                             </article>
                             <article class="editar_excluir">
                                 <a href="LivroController?operacao=Remover&id=${livro.id}"><img src="image/lista/excluir.png"></a>
@@ -118,39 +106,6 @@
     </body>
 
     <script>
-        function modal(id, titulo, autor, idade, estimativa, progresso, qtdLinguas){
-
-            var e = document.getElementById("select" + id);
-            var metodo = e.options[e.selectedIndex].value;
-
-            document.getElementById("tituloModal").innerText = titulo;
-            document.getElementById("autorModal").innerText = autor;
-
-            switch (metodo) {
-                case "idade":
-                    document.getElementById("mensagemModal").innerText = "O livro tem " + idade + " anos";
-                    break;
-                case "media":
-                    document.getElementById("mensagemModal").innerText = "Considerando que cada página levará, em média, um minuto, a estimativa do tempo de leitura é de " + estimativa;
-                    break;
-                case "porcento":
-                    document.getElementById("mensagemModal").innerText = "Você já leu "+ progresso +"% do livro";
-                    break;
-                case "qtd":
-                    document.getElementById("mensagemModal").innerText = "O livro está disponível em "+ qtdLinguas +" línguas";
-                    break;
-            }
-
-            let modal = document.querySelector("div#fundo")
-            modal.style.display = "block"
-        }
-
-        function fecharModal(){
-            let modal = document.querySelector("div#fundo")
-            let fechar = document.querySelector("img#fechar")
-            modal.style.display = "none"
-        }
-
         function menu(){
             let menu = document.getElementById('menu')
 

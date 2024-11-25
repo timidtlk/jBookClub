@@ -51,6 +51,9 @@ public class LivroController extends HttpServlet {
 			case "editar":
 				modificarLivro(request, response);
 				break;
+			case "metodo":
+				mostrarMetodo(request, response);
+				break;
 		}
 	}
 
@@ -186,6 +189,33 @@ public class LivroController extends HttpServlet {
 		request.setAttribute("ano", formatter.format(livro.getAnoLancamento()));
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/edit.jsp");
+		dispatcher.forward(request, response);
+	}
+
+	private void mostrarMetodo(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String id = request.getParameter("id");
+		String metodo = request.getParameter("select");
+
+		Livro livro = lDAO.procurarLivro(id);
+
+		request.setAttribute("titulo", livro.getTitulo());
+		request.setAttribute("autor", livro.getAutor());
+		switch (metodo) {
+			case "idade":
+				request.setAttribute("metodo", "O livro tem " + livro.getIdadeLivro() + " anos");
+				break;
+			case "media":
+				request.setAttribute("metodo", "Considerando que cada página levará, em média, um minuto, a estimativa do tempo de leitura é de " + livro.getEstimativaLeitura());
+				break;
+			case "porcento":
+				request.setAttribute("metodo", "Você já leu "+ livro.getProgressoPcent() +"% do livro");
+				break;
+			case "qtd":
+				request.setAttribute("metodo", "O livro está disponível em "+ livro.getQtdLinguas() +" línguas");
+				break;
+		}
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/metodo.jsp");
 		dispatcher.forward(request, response);
 	}
 }

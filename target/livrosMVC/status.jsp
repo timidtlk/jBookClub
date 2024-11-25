@@ -34,7 +34,7 @@
                 </article>
                 <article style="${(requestScope.status) ? "color: #5a932b;" : "color: rgb(189, 55, 55);"}">
                     <h1>${mensagem}</h1>
-                    <a href="infoLivros.html">
+                    <a href="infoLivros.jsp">
                         <input type="button" value="VOLTAR">
                     </a>
                 </article>
